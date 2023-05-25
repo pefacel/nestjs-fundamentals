@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'books' })
 export class Book {
@@ -17,4 +17,12 @@ export class Book {
 
   @Column('int')
   n_pages: number;
+
+  @Column('text', { nullable: true })
+  slug: string;
+
+  @BeforeInsert()
+  createSlug() {
+    this.slug = this.author.toLocaleLowerCase().trim().replaceAll(' ', '-');
+  }
 }

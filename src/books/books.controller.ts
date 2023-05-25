@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { AddNumber8Pipe } from 'src/commons/pipes/addnumber8.pipe';
 
 @Controller('books')
 export class BooksController {
@@ -19,6 +21,10 @@ export class BooksController {
   create(@Body() createBookDto: CreateBookDto) {
     return this.booksService.create(createBookDto);
   }
+  @Get('/raw')
+  testingRawQuery() {
+    return this.booksService.rawQuery();
+  }
 
   @Get()
   findAll() {
@@ -26,7 +32,7 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.booksService.findOne(id);
   }
 
